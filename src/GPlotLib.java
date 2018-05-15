@@ -4,7 +4,7 @@ public class GPlotLib {
 	public static void main(String args[])
 	{
 		Tokeniser tokenizer = new Tokeniser();
-		  tokenizer.add("sin|cos|exp|ln|sqrt", 1); 
+		  tokenizer.add("sin|cos|exp|ln|sqrt|asin|acos|atan|log|log2", 1); 
 		  tokenizer.add("\\(", 2); 
 		  tokenizer.add("\\)", 3); 
 		  tokenizer.add("[+-]", 4); 
@@ -23,5 +23,32 @@ public class GPlotLib {
 			catch (Exception e) {
 			  System.out.println(e.getMessage());
 			}
+		  AddSubtract innerSum =
+				  new AddSubtract();
+				innerSum.add(new Constant(1), true);
+				innerSum.add(new Constant(3), true);
+
+				Expression sqrt =
+				  new Function(
+				    Function.SQRT,
+				    innerSum);
+
+				Expression expo =
+				  new Exponentiation(
+				    new Constant(2),
+				    new Constant(4));
+
+				MultDivide prod =
+				  new MultDivide();
+				prod.add(new Constant(3), true);
+				prod.add(expo, true);
+
+				AddSubtract expression =
+				  new AddSubtract();
+				expression.add(prod, true);
+				expression.add(sqrt, true);
+
+				System.out.println("The result is "
+				  + expression.getValue());
 	}
 }

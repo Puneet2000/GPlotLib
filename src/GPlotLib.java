@@ -22,7 +22,7 @@ public class GPlotLib {
 		  while(j<200)
 		  {
 			  x.add(i);
-			  y.add((i*i*i)+ 3*(i*i)+(i)+1);
+			  y.add(1/i);
 			  i=i+0.25;
 			  j++;
 		  }

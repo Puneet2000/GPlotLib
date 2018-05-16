@@ -37,6 +37,7 @@ public class PaintPanel extends JPanel {
 	{
 		
 		Double x1=pointsx.get(i),x2=pointsx.get(i+1),y1=pointsy.get(i),y2=pointsy.get(i+1);
+		if(y1*y2>=0)
 	   g.drawLine(scalex(x1),scaley(y1),scalex(x2),scaley(y2));
 
 

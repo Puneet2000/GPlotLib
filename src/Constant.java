@@ -7,7 +7,7 @@ public class Constant implements Expression {
 		this.value = value;
 	}
 	
-	public void Constant(String value)
+	public Constant(String value)
 	{
 		this.value = Double.valueOf(value);
 	}

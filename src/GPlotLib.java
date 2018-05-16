@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
 
 public class GPlotLib {
-
+	public static ArrayList<Double> x , y;
 	public static void main(String args[])
 	{
 		Tokeniser tokenizer = new Tokeniser();
@@ -12,43 +15,34 @@ public class GPlotLib {
 		  tokenizer.add("\\^", 6); 
 		  tokenizer.add("[0-9]+",7); 
 		  tokenizer.add("[a-zA-Z][a-zA-Z0-9_]*", 8); 
+		  x = new ArrayList<Double>();
+		  y= new ArrayList<Double>();
+		  int j=0;
+		  double i=-25;
+		  while(j<200)
+		  {
+			  x.add(i);
+			  y.add((i*i*i)+ 3*(i*i)+(i)+1);
+			  i=i+0.25;
+			  j++;
+		  }
+		  new GPlotLib().drawGUI();
 		  
-		  try {
-			  tokenizer.tokenise("sin(x)^2+cos(x)^2");
-
-			  for (Token tok : tokenizer.getToken()) {
-			    System.out.println("" + tok.token + " " + tok.sequence);
-			  }
-			}
-			catch (Exception e) {
-			  System.out.println(e.getMessage());
-			}
-		  AddSubtract innerSum =
-				  new AddSubtract();
-				innerSum.add(new Constant(1), true);
-				innerSum.add(new Constant(3), true);
-
-				Expression sqrt =
-				  new Function(
-				    Function.SQRT,
-				    innerSum);
-
-				Expression expo =
-				  new Exponentiation(
-				    new Constant(2),
-				    new Constant(4));
-
-				MultDivide prod =
-				  new MultDivide();
-				prod.add(new Constant(3), true);
-				prod.add(expo, true);
-
-				AddSubtract expression =
-				  new AddSubtract();
-				expression.add(prod, true);
-				expression.add(sqrt, true);
-
-				System.out.println("The result is "
-				  + expression.getValue());
+		  
+	}
+	public void drawGUI()
+	
+	{
+		JFrame jfrm = new JFrame("Paint Demo");
+		
+		jfrm.setSize(1000, 1010);
+	
+		jfrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+		PaintPanel pp = new PaintPanel(x,y);
+		
+		jfrm.add(pp);
+	
+		jfrm.setVisible(true);
 	}
 }

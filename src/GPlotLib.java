@@ -1,8 +1,12 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class GPlotLib {
 	public static ArrayList<Double> x , y;
@@ -19,27 +23,62 @@ public class GPlotLib {
 		  tokenizer.add("[a-zA-Z][a-zA-Z0-9_]*", 8); 
 		  x = new ArrayList<Double>();
 		  y= new ArrayList<Double>();
-		  String function=JOptionPane.showInputDialog("Enter your function ( eg : sin(x)) : y = ");      
-		  function = function.replaceAll("\\s","");
-		  System.out.println(function);
-		  int j=0;
-		  double i=-25;
+		  JFrame jf = new JFrame("Menu");
+		  jf.setSize(200,100);
+		  jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		  JPanel jp = new JPanel();
+		  JButton Plotter = new JButton ("Plotter");
 		
-		 
+		  JButton Calculator = new JButton("Calculator");
+		  jp.add(Plotter);
+		  jp.add(Calculator);
+		  jf.add(jp);
+		  Plotter.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  String function=JOptionPane.showInputDialog(jf,"Enter your function ( eg : sin(x)  ) : y = ");      
+				  function = function.replaceAll("\\s","");
+				  if(function!=null && function.length()>0 ) {
+				  System.out.println(function);
+				  int j=0;
+				  double i=-25;
+				
+				 
+				  
+				  tokenizer.tokenise(function);
+				  while (j<200) {
+					  x.add(i);
+					  Parser parser= new Parser(i);
+					 
+				    Expression expression = parser.Parse(tokenizer.getToken());
+				    y.add(expression.getValue());
+				    System.out.println("The value of the expression is "+expression.getValue());
+					  i=i+0.25;
+					  j++;
+				   
+				  }
+				  new GPlotLib().drawGUI();
+				  }
+			  } 
+			} );
 		  
-		  tokenizer.tokenise(function);
-		  while (j<200) {
-			  x.add(i);
-			  Parser parser= new Parser(i);
-			 
-		    Expression expression = parser.Parse(tokenizer.getToken());
-		    y.add(expression.getValue());
-		    System.out.println("The value of the expression is "+expression.getValue());
-			  i=i+0.25;
-			  j++;
-		   
-		  }
-		  new GPlotLib().drawGUI();
+		  Calculator.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  String function=JOptionPane.showInputDialog("Enter your Expression");      
+				  function = function.replaceAll("\\s","");
+				  if(function!=null && function.length()>0) {
+				  System.out.println(function); 
+				  tokenizer.tokenise(function);
+				  Parser parser= new Parser(0);
+					 
+				  Expression expression = parser.Parse(tokenizer.getToken());
+				  JOptionPane.showMessageDialog(jf, expression.getValue(), "Answer is : ",1);
+				  
+			   
+			  } 
+			  }
+			} );
+		  jf.setVisible(true);
+		  
 		 
 		  
 	}

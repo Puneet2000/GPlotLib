@@ -3,9 +3,10 @@ import java.util.ArrayList;
 public class MultDivide implements Expression{
 ArrayList<Term> terms;
 	
-	MultDivide()
+	MultDivide(Expression exp , boolean positive)
 	{
 		this.terms =  new ArrayList<Term>();
+		this.terms.add(new Term(exp,positive));
 	}
 	
 	public void add(Expression exp , boolean positive)

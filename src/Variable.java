@@ -4,17 +4,13 @@ public class Variable implements Expression {
 	double value;
 	boolean isSet;
 	
-  Variable(String name)
+  Variable(String name , double value)
   {
 	  this.name = name;
-	  this.isSet = false;
-  }
-  public void setValue(double value)
-  {
-	  
 	  this.value = value;
-	  this.isSet= true;
+	  this.isSet = true;
   }
+ 
   public int getType()
   {
 	  return Expression.VARIABLE_NODE;

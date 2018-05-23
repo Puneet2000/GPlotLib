@@ -3,23 +3,26 @@ import java.util.LinkedList;
 public class Parser {
   LinkedList<Token> tokens;
   Token lookahead;
-  
-  @SuppressWarnings("unchecked")
-public void Parse(LinkedList<Token> tokens)
-  {
+  double value;
+  Parser (double value){
+	  this.value = value;
+  }
+public Expression Parse(LinkedList<Token> tokens)
+  {  System.out.println("Inside PArse");
 	  this.tokens = (LinkedList<Token>)tokens.clone();
 	  lookahead = this.tokens.getFirst();
-	   expression();
-	   
+	   Expression exp =expression();
+	   System.out.println(exp.getValue());
 	   if(lookahead.token != Token.EPSILON)
 	   {
-		   System.out.println("Inavlid Input");
+		   System.out.println("Inavlid Input 1 : " + lookahead.sequence);
 		   System.exit(0);
 	   }
+	   return exp;
   }
   
   public void nextToken()
-  {
+  {  System.out.println("Inside nextToken");
 	  tokens.pop();
 	  if (tokens.isEmpty())
 		  lookahead = new Token(Token.EPSILON ,"");
@@ -27,117 +30,169 @@ public void Parse(LinkedList<Token> tokens)
 		  lookahead = tokens.getFirst();
   }
   
-  public void expression()
+  public Expression expression()
   {
-	  signedTerm();
-	  recrSum();
+	  System.out.println("Inside Expression");
+	  Expression exp =signedTerm();
+	  return recrSum(exp);
   }
-  public void signedTerm()
-  {
+  public Expression signedTerm()
+  {  System.out.println("Inside signedTerm");
 	  if(lookahead.token == Token.PLUSMINUS)
 	  {
-		  nextToken();
-		  term();
+		  boolean positive = lookahead.sequence.equals("+");
+		    nextToken();
+		    Expression t = term();
+		    if (positive)
+		      return t;
+		    else {
+		    	AddSubtract p = new AddSubtract(t,true);
+	        
+	            return p;
+		      
+		      }
 	  }
 	  else
 	  {
-		  term();
+		  return term();
 	  }
   }
-  public void recrSum()
-  {
-	  if (lookahead.token ==Token.PLUSMINUS)
-	  {
-		  nextToken();
-		  term();
-		  recrSum();
+  public Expression recrSum(Expression exp)
+  {         System.out.println("Inside recrSum");
+
+		  if (lookahead.token == Token.PLUSMINUS) {
+			    AddSubtract sum;
+			    
+			    if (exp.getType() == Expression.ADDITION_NODE)
+			      sum = (AddSubtract)exp;
+			    else
+			      {sum = new AddSubtract(exp,true);
+			    
+			      }
+		
+
+			    boolean positive = lookahead.sequence.equals("+");
+			    nextToken();
+			    Expression t = term();
+			    sum.add(t, positive);
+		  return recrSum(sum);
 	  }
-	  
+	  return exp;
   }
   
-  public void term()
-  {
-	  factor();
-	  recrTerm();
+  public Expression term()
+  { System.out.println("Inside term");
+	  Expression exp =factor();
+	  return  recrTerm(exp);
 	  
   }
-  public void factor()
-  {
-	argument();
-	recrFactor();
+  public Expression factor()
+  { System.out.println("Inside factor");
+	Expression expr =argument();
+	return recrFactor(expr);
   }
-  public void recrTerm()
-  {
+  public Expression recrTerm(Expression expression)
+  {   System.out.println("Inside recrTerm");
 	  if(lookahead.token == Token.MULTDIV)
 	  {
-		  nextToken();
-		  signedFactor();
-		  recrTerm();
+		  MultDivide prod;
+
+		    if (expression.getType() == Expression.MULTIPLICATION_NODE)
+		      prod = (MultDivide)expression;
+		    else
+		    { prod = new MultDivide(expression,true);}
+
+		    boolean positive = lookahead.sequence.equals("*");
+		    nextToken();
+		    Expression f = signedFactor();
+		    prod.add(f, positive);
+		  return recrTerm(prod);
 	  }
+	  return expression;
   }
-  public void signedFactor()
-  {
+  public Expression signedFactor()
+  {    System.out.println("Inside signedFactor");
 	  if(lookahead.token == Token.PLUSMINUS)
 	  {
-		  nextToken();
-		  factor();
+		  boolean positive = lookahead.sequence.equals("+");
+		    nextToken();
+		    Expression t = factor();
+		    if (positive)
+		      return t;
+		    else
+		      {return new AddSubtract(t, false);
+		      }
 	  }
 	  else
 	
-		  factor();
+		  return factor();
 	  }
   
-  public void recrFactor()
-  {
+  public Expression recrFactor(Expression exp)
+  {   System.out.println("Inside recrfactor");
 	  if (lookahead.token == Token.RAISED)
 	    {
 	     
 	      nextToken();
-	      signedFactor();
+	      Expression exponent = signedFactor();
+	      return new Exponentiation(exp, exponent);
+	      
 	    }
+	  return exp;
   }
-  public void argument()
-  {
+  public Expression argument()
+  {    System.out.println("Inside argument");
 	  if (lookahead.token == Token.FUNCTION)
 	    {
-	      
+		  int function = Function.stringToFunction(lookahead.sequence);;
 	      nextToken();
-	      argument();
+	      Expression expr =argument();
+	      return new Function(function, expr);
 	    }
 	    else if (lookahead.token == Token.OPEN_BRACKET)
 	    {
 	      nextToken();
-	      expression();
+	      Expression expr =expression();
+	   
 
 	      if (lookahead.token != Token.CLOSE_BRACKET)
 	      {
-	    	  System.out.println("Invalid Input");
+	    	  System.out.println("Invalid Input 2");
 	    	  System.exit(0);
 	      }
 
 	      nextToken();
+	      return expr; 
 	    }
 	    else
 	    {
 	     
-	      value();
+	      return value();
 	    }
   }
   
-  public void value() {
+  public Expression value() {
+	  System.out.println("Inside value");
 	  if (lookahead.token == Token.NUMBER)
 	    {
+		  Expression expr = new Constant(lookahead.sequence);
 	      nextToken();
+	      return expr;
 	    }
 	    else if (lookahead.token == Token.VARIABLE)
 	    {
+	    	Expression expr = new Variable(lookahead.sequence,value);
+	    	
 	      nextToken();
+	      return expr;
 	    }
 	    else
 	    {
+	       System.out.println(lookahead.sequence);
 	       System.out.println("Invalid Expression");
 	       System.exit(0);
 	    }
+	  return null;
   }
   
   }

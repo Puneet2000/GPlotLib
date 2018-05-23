@@ -4,9 +4,11 @@ public class AddSubtract implements Expression {
 
 	ArrayList<Term> terms;
 	
-	AddSubtract()
+	AddSubtract(Expression exp , boolean positive)
 	{
 		this.terms =  new ArrayList<Term>();
+		this.terms.add(new Term(exp,positive));
+		
 	}
 	
 	public void add(Expression exp , boolean positive)

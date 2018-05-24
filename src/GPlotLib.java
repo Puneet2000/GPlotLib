@@ -28,8 +28,10 @@ public class GPlotLib {
 		  JButton Plotter = new JButton ("Plotter");
 		
 		  JButton Calculator = new JButton("Calculator");
+		  JButton derivative = new JButton("Find Derivative");
 		  jp.add(Plotter);
 		  jp.add(Calculator);
+		  jp.add(derivative);
 		  jf.add(jp);
 		  Plotter.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
@@ -70,6 +72,23 @@ public class GPlotLib {
 					 
 				  Expression expression = parser.Parse(tokenizer.getToken());
 				  JOptionPane.showMessageDialog(jf, expression.getValue(), "Answer is : ",1);
+				  
+			   
+			  } 
+			  }
+			} );
+		  
+		  derivative.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  String function=JOptionPane.showInputDialog("Enter your Expression");      
+				  function = function.replaceAll("\\s","");
+				  if(function!=null && function.length()>0) {
+				  System.out.println(function); 
+				  tokenizer.tokenise(function);
+				  DiffParser parser= new DiffParser();
+					 
+				  Differntial expression = parser.Parse(tokenizer.getToken());
+				  JOptionPane.showMessageDialog(jf, expression.getDifferntial(), "The Derivative of function is : ",1);
 				  
 			   
 			  } 

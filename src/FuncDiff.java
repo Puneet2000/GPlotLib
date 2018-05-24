@@ -31,20 +31,28 @@ public class FuncDiff implements Differntial{
 	  }
 
 	  public String getDifferntial() {
+		  String s= argument.getDifferntial();
+		  if(s!="0") {
+		  if(s=="1")
+			  s= "";
+		  else s ="*"+s;
 	    switch (function) {
-	      case SIN:  return "(cos("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case COS:  return "(-sin("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case TAN:  return "((sec("+argument.getFunction()+")^2)*"+argument.getDifferntial()+")";
-	      case ASIN: return "(cos("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case ACOS: return "(cos("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case ATAN: return "(cos("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case SQRT: return "(1/sqrt("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case EXP:  return "(exp("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case LN:   return "(1/("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case LOG:  return "(1/("+argument.getFunction()+")*"+argument.getDifferntial()+")";
-	      case LOG2: return "(1/("+argument.getFunction()+")*"+argument.getDifferntial()+")";
+	      case SIN:  return "(cos("+argument.getFunction()+")"+s+")";
+	      case COS:  return "(-sin("+argument.getFunction()+")"+s+")";
+	      case TAN:  return "((sec("+argument.getFunction()+")^2)"+s+")";
+	      case ASIN: return "(1/sqrt(1-"+argument.getFunction()+"^2)"+s+")";
+	      case ACOS: return "(-1/sqrt(1-"+argument.getFunction()+"^2)"+s+")";
+	      case ATAN: return "(1/(1+"+argument.getFunction()+"^2)"+s+")";
+	      case SQRT: return "(1/sqrt("+argument.getFunction()+")"+s+")";
+	      case EXP:  return "(exp("+argument.getFunction()+")"+s+")";
+	      case LN:   return "(1/("+argument.getFunction()+")"+s+")";
+	      case LOG:  return "(1/("+argument.getFunction()+")"+s+")";
+	      case LOG2: return "(1/("+argument.getFunction()+")"+s+")";
 	    }
 	    throw new RuntimeException("Invalid function id "+function+"!");
+		  }
+		  else
+			  return "0";
 	  }
 
 	  public static int stringToFunction(String str) {

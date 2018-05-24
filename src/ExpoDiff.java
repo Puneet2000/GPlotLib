@@ -31,7 +31,7 @@ public class ExpoDiff implements Differntial{
 		}
 		else
 		{
-			return "1";
+			return "(("+base.getFunction()+"^"+exponent.getFunction()+")*(("+ exponent.getFunction()+"/"+base.getFunction()+")*"+base.getDifferntial()+")+(ln("+base.getFunction()+")*"+exponent.getDifferntial()+"))";
 		}
 	}
 

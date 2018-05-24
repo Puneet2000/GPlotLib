@@ -10,6 +10,6 @@
 ### Tools
 - Java and Swing
 
-### Refrences :
+### References :
 - http://cogitolearning.co.uk
 

@@ -17,10 +17,11 @@ public class ExpoDiff implements Differntial{
 	public String getDifferntial() {
 		if(base.getType() ==Differntial.CONSTANT_NODE && exponent.getType()!=Differntial.CONSTANT_NODE)
 		return "(("+ base.getFunction()+'^'+exponent.getFunction()+")*ln("+base.getFunction()+")*"+exponent.getDifferntial()+")";
-		else if(base.getType() !=Differntial.VARIABLE_NODE && exponent.getType()==Differntial.CONSTANT_NODE)
-		{
-			int c = Integer.parseInt(exponent.getFunction());
-			return "(" + exponent.getType()+"*("+base.getFunction()+"^"+Integer.toString(c-1)+")*("+ base.getDifferntial()+"))";
+		else if(base.getType() !=Differntial.CONSTANT_NODE && exponent.getType()==Differntial.CONSTANT_NODE)
+		{   
+			double c = Double.parseDouble(exponent.getFunction());
+			
+			return "(" + exponent.getFunction()+"*("+base.getFunction()+"^"+Double.toString(c-1)+")*("+ base.getDifferntial()+"))";
 		}
 		else if(base.getType() ==Differntial.CONSTANT_NODE && exponent.getType()==Differntial.CONSTANT_NODE)
 		{

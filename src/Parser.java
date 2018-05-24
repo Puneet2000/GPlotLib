@@ -46,7 +46,7 @@ public Expression Parse(LinkedList<Token> tokens)
 		    if (positive)
 		      return t;
 		    else {
-		    	AddSubtract p = new AddSubtract(t,true);
+		    	AddSubtract p = new AddSubtract(t,positive);
 	        
 	            return p;
 		      

@@ -43,7 +43,7 @@ public class DiffParser {
 			    if (positive)
 			      return t;
 			    else {
-			    	AddDiff p = new AddDiff(t,true);
+			    	AddDiff p = new AddDiff(t,positive);
 		        
 		            return p;
 			      

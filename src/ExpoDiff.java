@@ -15,13 +15,15 @@ public class ExpoDiff implements Differntial{
 
 	@Override
 	public String getDifferntial() {
+		String s = (exponent.getDifferntial()!="1"? "*"+exponent.getDifferntial() :"");
+		String b = (base.getDifferntial()!="1"? "(*"+base.getDifferntial()+")" :"");
 		if(base.getType() ==Differntial.CONSTANT_NODE && exponent.getType()!=Differntial.CONSTANT_NODE)
-		return "(("+ base.getFunction()+'^'+exponent.getFunction()+")*ln("+base.getFunction()+")*"+exponent.getDifferntial()+")";
+		return "(("+ base.getFunction()+'^'+exponent.getFunction()+")*ln("+base.getFunction()+")"+s+")";
 		else if(base.getType() !=Differntial.CONSTANT_NODE && exponent.getType()==Differntial.CONSTANT_NODE)
 		{   
 			double c = Double.parseDouble(exponent.getFunction());
-			
-			return "(" + exponent.getFunction()+"*("+base.getFunction()+"^"+Double.toString(c-1)+")*("+ base.getDifferntial()+"))";
+			String k = ((Double.toString(c-1)!="1")? "^"+Double.toString(c-1):"");
+			return "(" + exponent.getFunction()+"*("+base.getFunction()+k+")"+ b+")";
 		}
 		else if(base.getType() ==Differntial.CONSTANT_NODE && exponent.getType()==Differntial.CONSTANT_NODE)
 		{

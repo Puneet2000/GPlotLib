@@ -19,11 +19,12 @@ public class AddDiff implements Differntial{
 	{
 		String d ="";
 		for(Term2 te : terms)
-		{
+		{  if(te.diff.getDifferntial()!="0") {
 			if(te.positive)
 				d = d + '+' + te.diff.getDifferntial();
 			else
 				d = d + '-' + te.diff.getDifferntial();
+		}
 		}
 		return d;
 	}

@@ -18,16 +18,27 @@ ArrayList<Term2> terms;
 	{
 		String d="";
 		for(Term2 te : terms)
-		{  d = d + te.diff.getDifferntial();
+		{  if(te.diff.getDifferntial()!="0") {
+			if(te.diff.getDifferntial()!="1"){
+			d = d + te.diff.getDifferntial();}
+			int count=0;
 			for(Term2 t : terms)
 			{
 				if(t!=te) {
+					if(t.diff.getDifferntial()!="1") {
+					
 					d= d + "*" +t.diff.getFunction();
+					
+					
+					}
 				}
 			}
 			d = d+ "+";
-		}
+		}}
+		d.replaceAll("[+-]*", "*");
 		d = d.substring(0, d.length() - 1);
+		if(d.charAt(0)=='*')
+			d= d.substring(1,d.length());
 		return d;
 	}
 	public int getType()

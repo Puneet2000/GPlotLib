@@ -1,5 +1,15 @@
 ### GPlotLib
-- Graph Plotter in java.
-- For functions y = f(x).
-- Parser for input included.
-- Bibiliography : http://cogitolearning.co.uk
+- Graph Plotter in java for functions y = f(x).
+- Expression Simplifier eg ( 2*sin(2)*exp(cos(3))).
+- Derivative finder for functions y = f(x).
+
+### Methodology
+- Parsing the input using **ll1** grammar rules.
+- Making an **Expression Tree** to find the result.
+
+### Tools
+- Java and Swing
+
+### Refrences :
+- http://cogitolearning.co.uk
+
